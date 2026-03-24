@@ -1,3 +1,0 @@
-# 9 点提醒任务 - 第三方框架升级测试
-TASK_DESC="9 点提醒：第三方框架升级测试"
-TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/reminder-9am-20260320.sh"
