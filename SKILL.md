@@ -101,7 +101,7 @@ ${CRON_DIR:-${HOME:-/home/zzm}/.openclaw/cron}/task-framework.sh run your-task
 ```
 
 **包装器会自动设置**：
-- `HOME=/home/zzm`
+- `HOME=${HOME:-/home/zzm}`
 - `PATH` 包含 node、npm、openclaw 等命令路径
 - 日志输出重定向
 
