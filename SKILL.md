@@ -39,6 +39,28 @@ description: |
 - ✅ 框架极简，责任清晰，易于扩展
 - ✅ **渠道无关**：支持飞书、Telegram、Discord、Slack 等任意 OpenClaw 渠道
 
+### task-wrapper.sh - 环境变量包装器
+
+**用途**：确保任务脚本在 cron 环境下有正确的环境变量（PATH、HOME 等）。
+
+**何时使用**：
+- 在 crontab 中直接调用任务脚本时
+- 需要确保脚本能找到 node、npm、openclaw 等命令时
+
+**用法**：
+```bash
+# 方式 1: 通过包装器执行任务脚本
+/home/zzm/.openclaw/cron/task-wrapper.sh /home/zzm/.openclaw/cron/your-task.sh
+
+# 方式 2: 通过框架执行（框架内部已处理环境变量）
+/home/zzm/.openclaw/cron/task-framework.sh run your-task
+```
+
+**包装器会自动设置**：
+- `HOME=/home/zzm`
+- `PATH` 包含 node、npm、openclaw 等命令路径
+- 日志输出重定向
+
 ## 🌐 渠道配置
 
 **环境变量**（可选，默认使用当前渠道配置）：
@@ -63,7 +85,7 @@ export REPORT_TARGET="ou_xxx"      # 目标用户/群组 ID（根据渠道而定
 ```
 /home/zzm/.openclaw/cron/
 ├── task-framework.sh          # 框架主脚本（v2.0）
-├── task-wrapper.sh            # 包装器（环境变量配置）
+├── task-wrapper.sh            # 包装器（cron 环境环境变量配置）
 ├── send-report.sh             # 报告发送脚本
 ├── tasks/                     # 任务定义目录
 │   ├── check-openclaw.task    # OpenClaw 检查任务
@@ -73,10 +95,64 @@ export REPORT_TARGET="ou_xxx"      # 目标用户/群组 ID（根据渠道而定
 ├── logs/                      # 日志目录
 │   ├── check-openclaw_20260320_080500.log
 │   └── morning-brief_20260320_080000.log
+├── reports/                   # 任务报告备份目录
 ├── morning-brief.sh           # 晨间简报脚本
 ├── check-openclaw-update.sh   # OpenClaw 检查脚本
 ├── update-all.sh              # 仓库更新脚本
 └── README.md                  # 详细文档
+```
+
+---
+
+## 🎯 命令详解
+
+### task-framework.sh 用法
+
+```bash
+/home/zzm/.openclaw/cron/task-framework.sh <command> [options]
+```
+
+### 命令列表
+
+| 命令 | 用法 | 说明 |
+|------|------|------|
+| `list` | `task-framework.sh list` | 列出所有已注册任务 |
+| `run` | `task-framework.sh run <task_name>` | 执行单个任务 |
+| `run-all` | `task-framework.sh run-all` | 依次执行所有任务（测试用） |
+| `status` | `task-framework.sh status` | 查看最近执行状态 |
+
+### 详细说明
+
+#### list - 列出任务
+```bash
+$ ./task-framework.sh list
+check-openclaw   - OpenClaw 版本检查
+morning-brief    - 晨间简报
+update-repos     - 仓库代码自动更新
+```
+
+#### run - 执行任务
+```bash
+# 执行单个任务
+./task-framework.sh run morning-brief
+
+# 可选：指定报告渠道
+REPORT_CHANNEL=telegram REPORT_TARGET="-1001234567890" ./task-framework.sh run morning-brief
+```
+
+#### run-all - 批量执行
+```bash
+# 按注册顺序依次执行所有任务
+./task-framework.sh run-all
+```
+
+#### status - 查看状态
+```bash
+$ ./task-framework.sh status
+任务名            状态    执行时间
+check-openclaw    ✅成功  2026-03-24 08:05
+morning-brief     ✅成功  2026-03-24 08:00
+update-repos      ✅成功  2026-03-24 08:00
 ```
 
 ---
@@ -180,7 +256,6 @@ crontab -e
 | `check-openclaw` | OpenClaw 版本检查 | check-openclaw-update.sh | 每天 08:05 |
 | `morning-brief` | 晨间简报（新闻 + 任务 + 推荐） | morning-brief.sh | 每天 08:00 |
 | `update-repos` | 仓库代码自动更新 | update-all.sh | 每天 08:00 |
-| `reminder-9am-20260320` | 9 点提醒确认 | reminder-9am-20260320.sh | 按需 |
 
 ---
 
@@ -459,7 +534,6 @@ echo "0 2 * * * /home/zzm/.openclaw/cron/task-framework.sh run backup-db" | cron
 ## 🔗 相关文档
 
 - `/home/zzm/.openclaw/cron/README.md` - 框架详细说明
-- `/home/zzm/.openclaw/cron/crontab.example` - crontab 配置示例
 - `/home/zzm/.openclaw/workspace/TOOLS.md` - 定时任务最佳实践
 - `/home/zzm/.openclaw/workspace/HEARTBEAT.md` - 心跳检查任务配置
 
