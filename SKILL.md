@@ -13,6 +13,50 @@ description: |
 **GitHub**: https://github.com/xiaoyekanren/openclaw-cron-framework
 ---
 
+## ⚙️ 首次使用配置（必读！）
+
+**克隆框架后，必须修改以下配置才能使用：**
+
+### 1. 用户 ID 配置
+
+搜索所有脚本中的 `ou_xxx` 或 `ou_476c7862905aec59a12d19ebd8c7f6af`，替换为你的飞书用户 ID：
+- `task-framework.sh`: `REPORT_TARGET`
+- `send-report.sh`: `REPORT_TARGET`
+- `task-wrapper.sh`: `FEISHU_USER`
+- `morning-brief.sh`: `FEISHU_USER`
+
+**获取你的飞书 ID**：飞书 → 点击头像 → 个人资料页查看（格式：`ou_xxx`）
+
+### 2. 目录路径配置
+
+搜索并替换 `/home/zzm/.openclaw/cron`，改为你的实际路径：
+- 脚本中的 `CRON_DIR`、`FRAMEWORK_DIR`
+- 任务文件 `tasks/*.task` 中的 `TASK_SCRIPT`
+
+### 3. 环境变量快速配置
+
+在 crontab 中设置环境变量即可覆盖默认值：
+```bash
+# 在 crontab 顶部添加
+CRON_DIR="/你的/路径/.openclaw/cron"
+REPO_DIR="/你的/仓库/目录"
+REPORT_TARGET="ou_你的用户ID"
+OPENCLAW_CMD="/usr/local/bin/openclaw"
+
+# 然后执行任务
+0 8 * * * /你的/路径/task-framework.sh run morning-brief
+```
+
+### 4. npm 代理（如需要）
+
+`check-openclaw-update.sh` 中的代理配置：
+```bash
+export npm_config_proxy="http://你的代理:端口"
+export npm_config_https_proxy="http://你的代理:端口"
+```
+
+---
+
 # OpenClaw 定时任务框架 v2.0
 
 ## 🚨 核心架构（v2.0 重构后）

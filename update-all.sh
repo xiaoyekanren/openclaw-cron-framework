@@ -3,12 +3,16 @@
 # 每天自动拉取所有仓库最新代码
 # 用法：update-all.sh [日志文件]
 
-# 环境变量（cron 环境必需）
-export HOME="/home/zzm"
-export PATH="/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# 环境变量（可通过同名环境变量覆盖）
+export HOME="${HOME:-/home/zzm}"
+export PATH="${PATH:-/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin}"
+
+# 目录配置（可通过环境变量覆盖）
+CRON_DIR="${CRON_DIR:-/home/zzm/.openclaw/cron}"
+REPO_DIR="${REPO_DIR:-/home/zzm/Srcs/repository}"
 
 LOG_FILE="${1:-/tmp/git-update-$$.log}"
-DETAIL_LOG="/home/zzm/.openclaw/cron/logs/update-details-$(date +%Y%m%d).log"
+DETAIL_LOG="$CRON_DIR/logs/update-details-$(date +%Y%m%d).log"
 
 echo "=== 更新开始：$(date '+%Y-%m-%d %H:%M:%S') ==="
 
@@ -77,7 +81,7 @@ update_repos() {
 }
 
 # 更新 repository 目录（skills 已移回此处）
-update_repos "/home/zzm/Srcs/repository/"
+update_repos "$REPO_DIR"
 
 # 记录结束时间
 END_TIME=$(date '+%Y-%m-%d %H:%M:%S')

@@ -4,20 +4,26 @@
 # 用法：task-wrapper.sh "<任务脚本>" "<任务描述>"
 # 功能：执行任务 + 发送报告（无论成功失败）
 
-# 环境变量（cron 环境必需）
-export HOME="/home/zzm"
-export PATH="/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# 环境变量（可通过同名环境变量覆盖）
+export HOME="${HOME:-/home/zzm}"
+export PATH="${PATH:-/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin}"
 
-# 绝对路径命令（仅非标准路径）
-OPENCLAW_CMD="/home/zzm/.npm-global/bin/openclaw"
-FEISHU_USER="ou_476c7862905aec59a12d19ebd8c7f6af"
+# 命令路径（可通过环境变量覆盖）
+OPENCLAW_CMD="${OPENCLAW_CMD:-openclaw}"
+
+# 飞书用户 ID（可通过环境变量覆盖）
+FEISHU_USER="${FEISHU_USER:-ou_xxx}"
+
+# 目录配置（可通过环境变量覆盖）
+CRON_DIR="${CRON_DIR:-/home/zzm/.openclaw/cron}"
+
+# 日志目录
+mkdir -p "$CRON_DIR/logs"
 
 TASK_SCRIPT="$1"
 TASK_DESC="$2"
 TASK_ID=$(date +%Y%m%d_%H%M%S)
-LOG_FILE="/home/zzm/.openclaw/cron/logs/${TASK_ID}.log"
-
-mkdir -p /home/zzm/.openclaw/cron/logs
+LOG_FILE="$CRON_DIR/logs/${TASK_ID}.log"
 
 # 记录开始时间（秒级时间戳）
 START_TIME=$(date +%s)
@@ -53,7 +59,7 @@ echo "📤 生成报告并发送..."
 
 if [[ "$TASK_DESC" == *"仓库"* ]]; then
     # 仓库更新任务 - 读取详细日志
-    DETAIL_LOG="/home/zzm/.openclaw/cron/logs/update-details-$(date +%Y%m%d).log"
+    DETAIL_LOG="$CRON_DIR/logs/update-details-$(date +%Y%m%d).log"
     
     if [ "$EXIT_CODE" -eq 0 ] && [ -f "$DETAIL_LOG" ]; then
         HAS_UPDATES=$(grep -c "🔄" "$DETAIL_LOG" 2>/dev/null || echo "0")
@@ -222,7 +228,7 @@ $OPENCLAW_CMD message send --channel feishu --target "$FEISHU_USER" --message "$
 echo "✅ 报告已发送"
 
 # 清理日志（保留 7 天）
-find /home/zzm/.openclaw/cron/logs -name "*.log" -mtime +7 -delete 2>/dev/null
+find "$CRON_DIR/logs" -name "*.log" -mtime +7 -delete 2>/dev/null
 
 echo ""
 echo "✅ 任务执行完成（日志已保存，报告已发送）"

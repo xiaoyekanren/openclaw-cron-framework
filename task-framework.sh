@@ -12,20 +12,21 @@
 # 4. 执行失败 → 发送错误信息
 # =============================================================================
 
-# 环境变量（cron 环境必需）
-export HOME="/home/zzm"
-export PATH="/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# 环境变量（可通过同名环境变量覆盖）
+export HOME="${HOME:-/home/zzm}"
+export PATH="${PATH:-/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin}"
 
-# 绝对路径命令
-OPENCLAW_CMD="/home/zzm/.npm-global/bin/openclaw"
+# 命令路径（可通过环境变量覆盖）
+OPENCLAW_CMD="${OPENCLAW_CMD:-openclaw}"
 
 # 渠道配置（可通过环境变量覆盖）
 # 支持：feishu, telegram, discord, slack, signal, whatsapp 等
 REPORT_CHANNEL="${REPORT_CHANNEL:-feishu}"
-REPORT_TARGET="${REPORT_TARGET:-ou_476c7862905aec59a12d19ebd8c7f6af}"
+REPORT_TARGET="${REPORT_TARGET:-ou_xxx}"
 
-# 目录配置
-FRAMEWORK_DIR="/home/zzm/.openclaw/cron"
+# 目录配置（可通过环境变量覆盖）
+CRON_DIR="${CRON_DIR:-/home/zzm/.openclaw/cron}"
+FRAMEWORK_DIR="$CRON_DIR"
 TASKS_DIR="$FRAMEWORK_DIR/tasks"
 LOGS_DIR="$FRAMEWORK_DIR/logs"
 
@@ -223,7 +224,7 @@ OpenClaw 定时任务框架 v2.0
 
 示例 .task 文件 (tasks/update-repos.task):
   TASK_DESC="仓库代码自动更新"
-  TASK_SCRIPT="/home/zzm/.openclaw/cron/update-all.sh"
+  TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/update-all.sh"
 
 当前配置:
   任务目录：$TASKS_DIR

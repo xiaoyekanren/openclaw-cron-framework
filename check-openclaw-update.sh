@@ -4,17 +4,17 @@
 # 用法：check-openclaw-update.sh
 # 返回：0=已是最新，1=有更新/失败
 
-# 环境变量（cron 环境必需）
-export HOME="/home/zzm"
-export PATH="/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# 环境变量（可通过同名环境变量覆盖）
+export HOME="${HOME:-/home/zzm}"
+export PATH="${PATH:-/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin}"
 
-# npm 代理配置（国内网络环境）
-export npm_config_proxy="http://192.168.99.4:7890"
-export npm_config_https_proxy="http://192.168.99.4:7890"
+# npm 代理配置（可通过环境变量覆盖）
+export npm_config_proxy="${npm_config_proxy:-http://192.168.99.4:7890}"
+export npm_config_https_proxy="${npm_config_https_proxy:-http://192.168.99.4:7890}"
 
-# 绝对路径命令（仅非标准路径）
-OPENCLAW_CMD="/home/zzm/.npm-global/bin/openclaw"
-NPM_CMD="/home/zzm/.npm-global/bin/npm"
+# 命令路径（可通过环境变量覆盖）
+OPENCLAW_CMD="${OPENCLAW_CMD:-openclaw}"
+NPM_CMD="${NPM_CMD:-npm}"
 
 CURRENT_VERSION=$($OPENCLAW_CMD --version 2>/dev/null | grep -oP '\d{4}\.\d+\.\d+' | head -1)
 
