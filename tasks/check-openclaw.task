@@ -1,3 +1,0 @@
-# OpenClaw 版本检查任务
-TASK_DESC="OpenClaw 更新检查"
-TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/check-openclaw-update.sh"

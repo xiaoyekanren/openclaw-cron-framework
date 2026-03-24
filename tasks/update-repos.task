@@ -1,3 +1,0 @@
-# 仓库代码自动更新任务
-TASK_DESC="仓库代码自动更新"
-TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/update-all.sh"

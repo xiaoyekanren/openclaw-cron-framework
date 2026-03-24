@@ -1,0 +1,5 @@
+# 任务定义示例
+# 复制此文件并修改为你自己的任务
+
+TASK_DESC="你的任务描述"
+TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/your-task.sh"
