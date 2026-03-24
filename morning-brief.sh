@@ -8,13 +8,13 @@
 # =============================================================================
 
 # 环境变量
-export HOME="/home/zzm"
-export PATH="/usr/local/node-v24.14.0-linux-x64/bin:/home/zzm/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export HOME="${HOME:-/home/zzm}"
+export PATH="${PATH:-/usr/local/...}/bin"
 
 # 配置（可通过环境变量覆盖）
 FEISHU_USER="${FEISHU_USER:-ou_xxx}"
 OPENCLAW_CMD="${OPENCLAW_CMD:-openclaw}"
-CRON_DIR="${CRON_DIR:-/home/zzm/.openclaw/cron}"
+CRON_DIR="${CRON_DIR:-${HOME:-/home/zzm}/.openclaw/cron}"
 LOG_FILE="${CRON_DIR}/logs/morning-brief-$(date +%Y%m%d).log"
 
 # 开始记录
