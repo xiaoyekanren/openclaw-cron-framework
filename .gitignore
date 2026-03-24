@@ -1,0 +1,11 @@
+# 个人配置（不提交）
+tasks/*.task
+!tasks/*.example
+
+# 日志
+logs/*.log
+logs/*.status
+
+# 临时文件
+*.tmp
+.DS_Store

@@ -1,0 +1,5 @@
+# 晨间简报任务示例
+# 复制为 morning-brief.task 后使用
+
+TASK_DESC="晨间简报"
+TASK_SCRIPT="${CRON_DIR:-/home/zzm/.openclaw/cron}/morning-brief.sh"
