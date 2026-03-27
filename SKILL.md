@@ -1,5 +1,5 @@
 ---
-name: cron-task-framework
+name: openclaw-cron-framework
 description: "OpenClaw 定时任务框架 v2.0。用于创建、管理、执行定时任务，自动发送报告。当以下情况时使用此 Skill：(1) 需要添加新的定时任务（晨间简报、系统监控、数据备份等）(2) 需要查看/执行/管理现有定时任务 (3) 需要配置 crontab 定时执行 (4) 用户提到定时任务、cron、自动执行、定时报告 (5) 需要任务执行后自动发送通知（支持飞书、Telegram、Discord 等）"
 ---
 
